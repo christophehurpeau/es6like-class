@@ -1,0 +1,23 @@
+{
+  "name": "es6like-class",
+  "description": "Write es6 like classes in es5 with a few more features",
+  "keywords": [
+    "class",
+    "classes"
+  ],
+  "version": "0.1.0",
+  "homepage": "https://github.com/christophehurpeau/es6like-class",
+  "license": "MIT",
+  "author": "Christophe Hurpeau <christophe@hurpeau.com> (http://christophe.hurpeau.com/)",
+  "repository": "git://github.com/christophehurpeau/es6like-class.git",
+  "scripts": {
+    "test": "make run-tests"
+  },
+  "main": "./lib/index.js",
+  "devDependencies": {
+    "gulp": "^3.8",
+    "mocha": "^2.1",
+    "proclaim": "^2.0",
+    "springbokjs-library": "^3.4"
+  }
+}
