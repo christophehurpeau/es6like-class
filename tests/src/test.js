@@ -25,7 +25,7 @@ test('check the constructor', function() {
 });
 
 test('constructor name', function() {
-    var B = newClass({name: 'B'});
+    var B = newClass({ name: 'B' });
     assert.strictEqual(B.name, 'B');
 });
 
@@ -238,7 +238,7 @@ test('class mixin', function() {
             B.call(this);
         }
     });
-    var e = new E();
+    new E();
     assert.equal(sequence.join(','), [
         'C#mixin',
         'D#mixin',
@@ -253,7 +253,7 @@ test('class mixin', function() {
 
 test('class warning on duplicate', function() {
     message = '';
-    var A = newClass({
+    newClass({
         with: [{
             a: 1
         }, {
@@ -278,10 +278,9 @@ test('class implements', function() {
     var B = newClass({
         extends: A
     });
-    // assert.equal(message, 'method1 is not implemented');
 
     message = '';
-    var C = newClass({
+    newClass({
         extends: B,
         implements: [
             { a: Object },
@@ -290,9 +289,7 @@ test('class implements', function() {
         a: Object
     });
 
-    console.log(message);
     assert.equal(message, [
-        // 'method1 is not implemented',
         'b is not implemented'
     ].join(''));
 });

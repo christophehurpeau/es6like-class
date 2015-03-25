@@ -232,13 +232,13 @@ test("class mixin", function () {
             B.call(this);
         }
     });
-    var e = new E();
+    new E();
     assert.equal(sequence.join(","), ["C#mixin", "D#mixin", "C#constructor", "B#mixin", "B#constructor", "A#mixin", "A#constructor"].join(","));
 });
 
 test("class warning on duplicate", function () {
     message = "";
-    var A = newClass({
+    newClass({
         "with": [{
             a: 1
         }, {
@@ -263,18 +263,14 @@ test("class implements", function () {
     var B = newClass({
         "extends": A
     });
-    // assert.equal(message, 'method1 is not implemented');
 
     message = "";
-    var C = newClass({
+    newClass({
         "extends": B,
         "implements": [{ a: Object }, { b: Object }],
         a: Object
     });
 
-    console.log(message);
-    assert.equal(message, [
-    // 'method1 is not implemented',
-    "b is not implemented"].join(""));
+    assert.equal(message, ["b is not implemented"].join(""));
 });
 //# sourceMappingURL=test.js.map
