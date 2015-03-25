@@ -84,6 +84,7 @@ var verifyImplementations = function verifyImplementations(interfaces, target) {
 
 exports.newClass = function newClass(description) {
     var hasConstructor = description.hasOwnProperty('constructor');
+    var hasName = description.hasOwnProperty('name');
     var hasParent = description.hasOwnProperty('extends');
     var parent = description.extends;
     var hasParentPrototype = hasParent && typeof parent === 'function';
@@ -102,6 +103,27 @@ exports.newClass = function newClass(description) {
             throw new Error('Invalid function constructor');
         }
     }
+    if (hasName && constructor.name !== description.name) {
+        try {
+            Object.defineProperty(constructor, 'name', {
+                value: description.name,
+                writable: false,
+                enumerable: false
+            });
+            Object.defineProperty(constructor, 'displayName', {
+                value: description.name,
+                writable: false,
+                enumerable: false
+            });
+        } catch (e) {
+            var fnCreator = new Function(
+                'init',
+                'return function ' + description.name + '(){return init.apply(this,arguments);}'
+            );
+            constructor = fnCreator(constructor);
+        }
+    }
+
     var prototype = hasParent ? Object.create(inherits) : constructor.prototype;
 
     if (!prototype) {

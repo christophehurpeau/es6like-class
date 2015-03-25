@@ -15,9 +15,8 @@
   },
   "main": "./lib/index.js",
   "devDependencies": {
-    "gulp": "^3.8",
-    "mocha": "^2.1",
-    "proclaim": "^2.0",
-    "springbokjs-library": "^3.4"
+    "mocha": "^2.2.1",
+    "proclaim": "^3.1.0",
+    "springbokjs-library": "^4.0.1"
   }
 }
