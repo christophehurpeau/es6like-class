@@ -20,9 +20,10 @@ var A = newClass({
 });
 
 var B = newClass({
+    name: 'B',
     extends: A,
 
-    constructor: function B(value) {
+    constructor(value) {
         assert.strictEqual(this.constructor, B);
         this.bValue = value;
     }
@@ -32,6 +33,7 @@ var B = newClass({
 
 ## Class special properties
 
+- name: set the name of the class
 - abstract: set the class as abstract
 - constructor: this is the constructor of the class, like the constructor function in es6 classes
 - extends: extends a class from another or from an object
