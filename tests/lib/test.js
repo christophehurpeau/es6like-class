@@ -27,6 +27,7 @@ test("check the constructor", function () {
 test("constructor name", function () {
     var B = newClass({ name: "B" });
     assert.strictEqual(B.name, "B");
+    assert.strictEqual(B.prototype.name, undefined);
 });
 
 test("constructor is not defined", function () {

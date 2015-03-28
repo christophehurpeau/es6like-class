@@ -2,7 +2,7 @@
 /* jshint evil: true */
 
 // verifies a key is not special for the class
-var specialKeys = 'abstract constructor extends implements prototype static with'.split(' ');
+var specialKeys = 'name abstract constructor extends implements prototype static with'.split(' ');
 var isNotASpecialKey = function(key, allowInit) {
     return specialKeys.indexOf(key) === -1;
 };
