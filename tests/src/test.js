@@ -162,6 +162,83 @@ test('class static and property', function() {
     assert.strictEqual(a.A, 'instanceValue');
 });
 
+test('class lazy property', function() {
+    var lazyPropertyCalled = false;
+    var A = newClass({
+        a: newClass.lazy(() => {
+          lazyPropertyCalled = true;
+          return 42;
+        })
+    });
+
+    var a = new A();
+    assert.isFalse(lazyPropertyCalled);
+    assert.strictEqual(a.a, 42);
+    assert.isTrue(lazyPropertyCalled);
+    lazyPropertyCalled = false;
+    assert.strictEqual(a.a, 42);
+    assert.isFalse(lazyPropertyCalled);
+});
+
+test('class const property', function() {
+    var A = newClass({
+        a: 42
+    });
+
+    var B = newClass({
+        b: newClass.const(42)
+    });
+
+    Object.defineProperty(A.prototype, 'a', {
+        writable: false,
+        configurable: true,
+        enumerable: false,
+        value: false
+    });
+
+    assert.isFalse(A.prototype.a);
+
+    assert.throws(
+        () => Object.defineProperty(B.prototype, 'b', {
+            writable: false,
+            configurable: true,
+            enumerable: false,
+            value: false
+        }),
+        'Cannot redefine property: b'
+    );
+
+    assert.strictEqual(B.prototype.b, 42);
+});
+
+test('class lazy const property', function() {
+    var lazyPropertyCalled = false;
+    var A = newClass({
+        a: newClass.lazy(() => {
+          lazyPropertyCalled = true;
+          return 42;
+        })
+    });
+
+    var a = new A();
+    assert.isFalse(lazyPropertyCalled);
+    assert.strictEqual(a.a, 42);
+    assert.isTrue(lazyPropertyCalled);
+    lazyPropertyCalled = false;
+    assert.strictEqual(a.a, 42);
+    assert.isFalse(lazyPropertyCalled);
+
+    assert.throws(
+        () => Object.defineProperty(A.prototype, 'a', {
+            writable: false,
+            configurable: true,
+            enumerable: false,
+            value: false
+        }),
+        'Cannot redefine property: a'
+    );
+
+});
 
 test('class static override', function() {
     var A = newClass({
@@ -294,4 +371,3 @@ test('class implements', function() {
         'b is not implemented'
     ].join(''));
 });
-

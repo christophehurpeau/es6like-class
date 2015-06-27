@@ -1,22 +1,22 @@
 {
-  "name": "es6like-class",
+  "name": "esnext-class",
   "description": "Write es6 like classes in es5 with a few more features",
   "keywords": [
     "class",
     "classes"
   ],
-  "version": "0.2.4",
-  "homepage": "https://github.com/christophehurpeau/es6like-class",
+  "version": "1.0.0",
+  "homepage": "https://github.com/christophehurpeau/esnext-class",
   "license": "MIT",
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (http://christophe.hurpeau.com/)",
-  "repository": "git://github.com/christophehurpeau/es6like-class.git",
+  "repository": "git://github.com/christophehurpeau/esnext-class.git",
   "scripts": {
     "test": "make run-tests"
   },
   "main": "./lib/index.js",
   "devDependencies": {
-    "mocha": "^2.2.1",
-    "proclaim": "^3.1.0",
-    "springbokjs-library": "^4.0.1"
+    "mocha": "^2.2.5",
+    "proclaim": "^3.2.1",
+    "springbokjs-library": "^4.1.1"
   }
 }

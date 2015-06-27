@@ -21,16 +21,30 @@ var copyProperties = function copyProperties(source, target, allowInit) {
                 warn('duplicated: ' + key);
             } else {
                 var descriptor = Object.getOwnPropertyDescriptor(source, key);
-                var isConst = key.startsWith('const_');
-                var isLazy = key.startsWith('lazyProperty_');
-                var targetKey, lazyPropertyComputer;
+                var isConst = key.startsWith('const_')
+                    || (typeof descriptor.value === 'object'
+                        && descriptor.value.constProperty === exports.const);
+                var isLazy = key.startsWith('lazyProperty_')
+                        || (typeof descriptor.value === 'object'
+                            && descriptor.value.lazyProperty === exports.lazy);
+                var targetKey = key;
+                var value = descriptor.value;
+                var lazyPropertyComputer;
                 if (isConst) {
-                    targetKey = key.substr('const_'.length);
+                    if (key.startsWith('const_')) {
+                        console.log('deprecated prefix "const", prefer exports.const');
+                        targetKey = key.substr('const_'.length);
+                    } else {
+                        value = value.value;
+                    }
                 } else if (isLazy) {
-                    lazyPropertyComputer = descriptor.value || descriptor.get;
-                    targetKey = key.substr('lazyProperty_'.length);
-                } else {
-                    targetKey = key;
+                    lazyPropertyComputer = value || descriptor.get;
+                    if (key.startsWith('lazyProperty_')) {
+                        console.log('deprecated prefix "lazyProperty_", prefer exports.lazy');
+                        targetKey = key.substr('lazyProperty_'.length);
+                    } else {
+                        value = value.value;
+                    }
                 }
 
                 Object.defineProperty(
@@ -39,19 +53,21 @@ var copyProperties = function copyProperties(source, target, allowInit) {
                     descriptor.get || descriptor.set || isLazy ? {
                         enumerable: false,
                         get: !isLazy ? descriptor.get : function() {
+                            var lazyValue = value();
                             Object.defineProperty(this, targetKey, {
                                 writable: false,
-                                configurable: false,
+                                configurable: !isConst,
                                 enumerable: false,
-                                value: lazyPropertyComputer()
+                                value: lazyValue
                             });
+                            return lazyValue;
                         },
                         set: descriptor.set
                     } : {
                         writable: false,
                         configurable: !isConst,
                         enumerable: false,
-                        value: descriptor.value
+                        value: value
                     }
                 );
             }
@@ -82,6 +98,36 @@ var verifyImplementations = function verifyImplementations(interfaces, target) {
     });
 };
 
+/**
+ * @param {*} value
+ */
+exports.lazy = function lazyProperty(value) {
+    return {
+        lazyProperty: lazyProperty,
+        value: value,
+    }
+};
+
+/**
+ * @param {*} value
+ */
+exports.const = function constProperty(value) {
+    return {
+        constProperty: constProperty,
+        value: value,
+    }
+};
+
+/**
+ * @param {*} fnOrValue
+ */
+exports.lazyConst = function lazyConstProperty(value) {
+    return {
+        lazyProperty: lazyProperty,
+        constProperty: constProperty,
+        value: value,
+    }
+};
 
 exports.newClass = function newClass(description) {
     var hasConstructor = description.hasOwnProperty('constructor');
@@ -180,3 +226,7 @@ exports.newClass = function newClass(description) {
 
     return constructor;
 };
+
+exports.newClass.lazy = exports.lazy;
+exports.newClass.const = exports.const;
+exports.newClass.lazyConst = exports.lazyConst;
