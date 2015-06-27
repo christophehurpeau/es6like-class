@@ -2,12 +2,11 @@
 var assert = require('proclaim');
 var lib = '../../lib' + (process.env.TEST_COV && '-cov' || '') + '/';
 
-
-
 var message = '';
 console.warn = function(warning) {
     message += warning;
 };
+
 var newClass = require(lib).newClass;
 
 test('check if Class is a function', function() {
@@ -18,7 +17,7 @@ test('check the constructor', function() {
     var A = newClass({
         constructor: function A() {
             assert.strictEqual(this.constructor, A);
-        }
+        },
     });
 
     new A();
@@ -48,11 +47,11 @@ test('extends constructor', function() {
     var A = newClass({
         constructor: function A(value) {
             this.initialized = value;
-        }
+        },
     });
 
     var B = newClass({
-        extends: A
+        extends: A,
     });
 
     var b = new B(123);
@@ -63,7 +62,7 @@ test('extends with defined constructor', function() {
     var A = newClass({
         constructor: function A(value) {
             this.initialized = value;
-        }
+        },
     });
 
     var B = newClass({
@@ -72,7 +71,7 @@ test('extends with defined constructor', function() {
         constructor: function B(value) {
             assert.strictEqual(this.constructor, B);
             this.bValue = value;
-        }
+        },
     });
 
     var b = new B(123);
@@ -80,19 +79,18 @@ test('extends with defined constructor', function() {
     assert.strictEqual(b.bValue, 123);
 });
 
-
 test('extends isInstanceOf', function() {
     var A = newClass({
         constructor: function A() {
-        }
+        },
     });
 
     var B = newClass({
-        extends: A
+        extends: A,
     });
 
     var C = newClass({
-        extends: B
+        extends: B,
     });
 
     assert.isInstanceOf(new A(), A);
@@ -108,19 +106,18 @@ test('extends isInstanceOf', function() {
     assert.isInstanceOf(new C(), C);
 });
 
-
 test('static properties', function() {
     var A = newClass({
         static: {
-            a: 1
-        }
+            a: 1,
+        },
     });
 
     var B = newClass({
         extends: A,
         static: {
-            b: 2
-        }
+            b: 2,
+        },
     });
 
     assert.strictEqual(A.a, 1);
@@ -139,12 +136,11 @@ test('static properties', function() {
     assert.notOk(B.prototype.hasOwnProperty('b'));
 });
 
-
 test('class toString method', function() {
     var A = newClass({
         toString() {
             return 'a';
-        }
+        },
     });
     assert.strictEqual(('' + new A()), 'a');
 });
@@ -152,9 +148,9 @@ test('class toString method', function() {
 test('class static and property', function() {
     var A = newClass({
         static: {
-            A: 'staticValue'
+            A: 'staticValue',
         },
-        A: 'instanceValue'
+        A: 'instanceValue',
     });
 
     var a = new A();
@@ -166,9 +162,9 @@ test('class lazy property', function() {
     var lazyPropertyCalled = false;
     var A = newClass({
         a: newClass.lazy(() => {
-          lazyPropertyCalled = true;
-          return 42;
-        })
+            lazyPropertyCalled = true;
+            return 42;
+        }),
     });
 
     var a = new A();
@@ -182,18 +178,18 @@ test('class lazy property', function() {
 
 test('class const property', function() {
     var A = newClass({
-        a: 42
+        a: 42,
     });
 
     var B = newClass({
-        b: newClass.const(42)
+        b: newClass.const(42),
     });
 
     Object.defineProperty(A.prototype, 'a', {
         writable: false,
         configurable: true,
         enumerable: false,
-        value: false
+        value: false,
     });
 
     assert.isFalse(A.prototype.a);
@@ -203,7 +199,7 @@ test('class const property', function() {
             writable: false,
             configurable: true,
             enumerable: false,
-            value: false
+            value: false,
         }),
         'Cannot redefine property: b'
     );
@@ -215,9 +211,9 @@ test('class lazy const property', function() {
     var lazyPropertyCalled = false;
     var A = newClass({
         a: newClass.lazy(() => {
-          lazyPropertyCalled = true;
-          return 42;
-        })
+            lazyPropertyCalled = true;
+            return 42;
+        }),
     });
 
     var a = new A();
@@ -233,7 +229,7 @@ test('class lazy const property', function() {
             writable: false,
             configurable: true,
             enumerable: false,
-            value: false
+            value: false,
         }),
         'Cannot redefine property: a'
     );
@@ -243,15 +239,15 @@ test('class lazy const property', function() {
 test('class static override', function() {
     var A = newClass({
         static: {
-            hello: 'aValue'
-        }
+            hello: 'aValue',
+        },
     });
 
     var B = newClass({
         extends: A,
         static: {
-            hello: 'bValue'
-        }
+            hello: 'bValue',
+        },
     });
 
     assert.strictEqual(A.hello, 'aValue');
@@ -262,7 +258,7 @@ test('class extends object', function() {
     var a = { a: 1 };
     var B = newClass({
         extends: a,
-        b: 2
+        b: 2,
     });
 
     var b = new B();
@@ -273,40 +269,39 @@ test('class extends object', function() {
     assert.strictEqual(a.b, undefined);
 });
 
-
 test('class mixin', function() {
     var sequence = [];
     var A = newClass({
         with: {
             init() {
                 sequence.push('A#mixin');
-            }
+            },
         },
         constructor() {
             sequence.push('A#constructor');
-        }
+        },
     });
     var B = newClass({
         extends: A,
         with: {
             init() {
                 sequence.push('B#mixin');
-            }
+            },
         },
         constructor() {
             sequence.push('B#constructor');
             A.call(this);
-        }
+        },
     });
     var C = {
         init() {
             sequence.push('C#mixin');
-        }
+        },
     };
     var D = {
         init() {
             sequence.push('D#mixin');
-        }
+        },
     };
     var E = newClass({
         extends: B,
@@ -314,29 +309,30 @@ test('class mixin', function() {
         constructor() {
             sequence.push('C#constructor');
             B.call(this);
-        }
+        },
     });
     new E();
-    assert.equal(sequence.join(','), [
-        'C#mixin',
-        'D#mixin',
-        'C#constructor',
-        'B#mixin',
-        'B#constructor',
-        'A#mixin',
-        'A#constructor'
-        ].join(','));
+    assert.equal(
+        sequence.join(','),
+        [
+            'C#mixin',
+            'D#mixin',
+            'C#constructor',
+            'B#mixin',
+            'B#constructor',
+            'A#mixin',
+            'A#constructor',
+        ].join(',')
+    );
 });
-
 
 test('class warning on duplicate', function() {
     message = '';
     newClass({
-        with: [{
-            a: 1
-        }, {
-            a: 2
-        }]
+        with: [
+            { a: 1 },
+            { a: 2 },
+        ],
     });
     assert.equal(message, 'duplicated: a');
 });
@@ -346,15 +342,16 @@ test('class implements', function() {
     var A = newClass({
         implements: {
             method1: function() {},
-            method2: function() {}
+
+            method2: function() {},
         },
-        method2: function() {}
+        method2: function() {},
     });
     assert.equal(message, 'method1 is not implemented');
 
     message = '';
     var B = newClass({
-        extends: A
+        extends: A,
     });
 
     message = '';
@@ -364,10 +361,13 @@ test('class implements', function() {
             { a: Object },
             { b: Object },
         ],
-        a: Object
+        a: Object,
     });
 
-    assert.equal(message, [
-        'b is not implemented'
-    ].join(''));
+    assert.equal(
+        message,
+        [
+            'b is not implemented',
+        ].join('')
+    );
 });

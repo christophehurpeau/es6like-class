@@ -7,8 +7,41 @@ general:
     ignore:
       - gh-pages
 
+dependencies:
+  override:
+    - npm install -g npm@3
+    - npm install --dev
+
 test:
   pre:
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
   override:
-    - npm run test-circleci  > $CIRCLE_TEST_REPORTS/junit/xunit.xml
+    - make lint
+    - make build
+    - node_modules/.bin/mocha --harmony --recursive --reporter xunit-file -u tdd tests/lib > $CIRCLE_TEST_REPORTS/junit/xunit.xml
+    - make docs
+
+#echo "\n> Prepare tests for browsers"
+#node_modules/.bin/gulp springbokjs-shim || exit 1
+
+#echo "\n> Run browser tests"
+#sudo start xvfb
+#karma start karma.conf.js --single-run --browsers=Firefox,Chrome,PhantomJS || exit 1
+
+
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - mv coverage coverage-tmp
+      - mv docs docs-tmp
+      - git checkout -f gh-pages
+      - rm -Rf docs coverage
+      - mv docs-tmp docs
+      - mv coverage-tmp coverage
+      - date > date.txt
+      - git add docs coverage
+      - git commit -m"auto commit from circleci"
+      - git remote set-url origin git@github.com:christophehurpeau/esnext-class.git
+      - git push origin gh-pages

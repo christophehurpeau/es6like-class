@@ -8,6 +8,7 @@ var message = '';
 console.warn = function (warning) {
     message += warning;
 };
+
 var newClass = require(lib).newClass;
 
 test('check if Class is a function', function () {
@@ -315,11 +316,7 @@ test('class mixin', function () {
 test('class warning on duplicate', function () {
     message = '';
     newClass({
-        'with': [{
-            a: 1
-        }, {
-            a: 2
-        }]
+        'with': [{ a: 1 }, { a: 2 }]
     });
     assert.equal(message, 'duplicated: a');
 });
@@ -329,6 +326,7 @@ test('class implements', function () {
     var A = newClass({
         'implements': {
             method1: function method1() {},
+
             method2: function method2() {}
         },
         method2: function method2() {}

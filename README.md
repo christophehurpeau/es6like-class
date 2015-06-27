@@ -94,5 +94,5 @@ Note: both the prototype function and the instance property values are constants
 [build-status-url]: https://drone.io/github.com/christophehurpeau/esnext-class/latest
 [npm-image]: https://img.shields.io/npm/v/esnext-class.svg?style=flat
 [npm-url]: https://npmjs.org/package/esnext-class
-[coverage-image]: http://img.shields.io/badge/coverage-89%-green.svg?style=flat
-[coverage-url]: http://christophehurpeau.github.io/esnext-class/docs/coverage.html
+[coverage-image]: http://img.shields.io/badge/coverage-92%-green.svg?style=flat
+[coverage-url]: http://christophehurpeau.github.io/esnext-class/coverage/lcov-report/lib/index.js.html

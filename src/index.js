@@ -16,6 +16,7 @@ var copyProperties = function copyProperties(source, target, allowInit) {
         if (sourceIsFunction && ['name', 'displayName', 'arguments', 'caller', 'length'].indexOf(key) !== -1) {
             return;
         }
+
         if (isNotASpecialKey(key) && (allowInit || key !== 'init')) {
             if (target.hasOwnProperty(key)) {
                 warn('duplicated: ' + key);
@@ -58,16 +59,17 @@ var copyProperties = function copyProperties(source, target, allowInit) {
                                 writable: false,
                                 configurable: !isConst,
                                 enumerable: false,
-                                value: lazyValue
+                                value: lazyValue,
                             });
                             return lazyValue;
                         },
-                        set: descriptor.set
+
+                        set: descriptor.set,
                     } : {
                         writable: false,
                         configurable: !isConst,
                         enumerable: false,
-                        value: value
+                        value: value,
                     }
                 );
             }
@@ -82,6 +84,7 @@ var addMixins = function addMixins(mixins, target, inherits) {
         if (mixin.hasOwnProperty('init')) {
             init.push(mixin.init);
         }
+
         copyProperties(mixin, target, false);
     });
     return init;
@@ -119,7 +122,7 @@ exports.const = function constProperty(value) {
 };
 
 /**
- * @param {*} fnOrValue
+ * @param {*} value
  */
 exports.lazyConst = function lazyConstProperty(value) {
     return {
@@ -150,17 +153,18 @@ exports.newClass = function newClass(description) {
             throw new Error('Invalid function constructor');
         }
     }
+
     if (hasName && constructor.name !== description.name) {
         try {
             Object.defineProperty(constructor, 'name', {
                 value: description.name,
                 writable: false,
-                enumerable: false
+                enumerable: false,
             });
             Object.defineProperty(constructor, 'displayName', {
                 value: description.name,
                 writable: false,
-                enumerable: false
+                enumerable: false,
             });
         } catch (e) {
             var fnCreator = new Function(
@@ -205,6 +209,7 @@ exports.newClass = function newClass(description) {
             // copy possibly inherited statics too
             copyProperties(parent, constructor, true);
         }
+
         constructor.prototype = prototype;
     }
 
@@ -213,7 +218,7 @@ exports.newClass = function newClass(description) {
             writable: true,
             configurable: true,
             enumerable: false,
-            value: constructor
+            value: constructor,
         });
     }
 
