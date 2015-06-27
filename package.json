@@ -11,12 +11,14 @@
   "author": "Christophe Hurpeau <christophe@hurpeau.com> (http://christophe.hurpeau.com/)",
   "repository": "git://github.com/christophehurpeau/esnext-class.git",
   "scripts": {
-    "test": "make run-tests"
+    "test": "mocha --harmony --recursive --bail -u tdd tests/lib",
+    "test-circleci": "mkdir junit ; mocha --harmony --recursive --reporter xunit-file -u tdd tests/lib > junit/xunit.xml"
   },
   "main": "./lib/index.js",
   "devDependencies": {
     "mocha": "^2.2.5",
     "proclaim": "^3.2.1",
-    "springbokjs-library": "^4.1.1"
+    "springbokjs-library": "^4.1.1",
+    "xunit-file": "0.0.6"
   }
 }
