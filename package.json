@@ -15,11 +15,9 @@
   },
   "main": "./lib/index.js",
   "devDependencies": {
-    "jscs": "^1.13.1",
-    "jscs-jsdoc": "^1.1.0",
     "mocha": "^2.2.5",
     "proclaim": "^3.2.1",
-    "springbokjs-library": "^5.0.1",
+    "springbokjs-library": "^5.0.2",
     "xunit-file": "0.0.6"
   }
 }
