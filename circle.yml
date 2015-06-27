@@ -8,5 +8,7 @@ general:
       - gh-pages
 
 test:
+  pre:
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
   override:
-    - npm run test-circleci
+    - npm run test-circleci  > $CIRCLE_TEST_REPORTS/junit/xunit.xml

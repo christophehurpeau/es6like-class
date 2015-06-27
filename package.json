@@ -12,7 +12,7 @@
   "repository": "git://github.com/christophehurpeau/esnext-class.git",
   "scripts": {
     "test": "mocha --harmony --recursive --bail -u tdd tests/lib",
-    "test-circleci": "mkdir junit ; mocha --harmony --recursive --reporter xunit-file -u tdd tests/lib > junit/xunit.xml"
+    "test-circleci": "mocha --harmony --recursive --reporter xunit-file -u tdd tests/lib"
   },
   "main": "./lib/index.js",
   "devDependencies": {
