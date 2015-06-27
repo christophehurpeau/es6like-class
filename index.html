@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Esnext-class : Write es6 like classes in es5 with a few more features">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Esnext-class</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/christophehurpeau/esnext-class">View on GitHub</a>
+
+          <h1 id="project_title">Esnext-class</h1>
+          <h2 id="project_tagline">Write es6 like classes in es5 with a few more features</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/christophehurpeau/esnext-class/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/christophehurpeau/esnext-class/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="esnext-class----" class="anchor" href="#esnext-class----" aria-hidden="true"><span class="octicon octicon-link"></span></a>esnext-class <a href="https://npmjs.org/package/esnext-class"><img src="https://img.shields.io/npm/v/esnext-class.svg?style=flat" alt="NPM version"></a> <a href="https://drone.io/github.com/christophehurpeau/esnext-class/latest"><img src="https://drone.io/github.com/christophehurpeau/esnext-class/status.png" alt="Build Status"></a> <a href="https://codeclimate.com/github/christophehurpeau/esnext-class"><img src="https://codeclimate.com/github/christophehurpeau/esnext-class/badges/gpa.svg" alt="Code Climate"></a> <a href="http://christophehurpeau.github.io/esnext-class/coverage/lcov-report/lib/index.js.html"><img src="https://codeclimate.com/github/christophehurpeau/esnext-class/badges/coverage.svg" alt="Coverage"></a>
+</h1>
+
+<p>Write es6 like classes in es5 with a few more features</p>
+
+<p>Cover some limitations to the current implementation of classes in es6:</p>
+
+<ul>
+<li>define properties</li>
+<li>use traits</li>
+</ul>
+
+<h2>
+<a id="use" class="anchor" href="#use" aria-hidden="true"><span class="octicon octicon-link"></span></a>Use</h2>
+
+<div class="highlight highlight-js"><pre><span class="pl-k">var</span> newClass <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>esnext-class<span class="pl-pds">'</span></span>).newClass;
+
+<span class="pl-k">var</span> A <span class="pl-k">=</span> newClass({
+    <span class="pl-en">constructor</span><span class="pl-k">:</span> <span class="pl-k">function</span> <span class="pl-en">A</span>(<span class="pl-smi">value</span>) {
+        <span class="pl-v">this</span>.initialized <span class="pl-k">=</span> value;
+    }
+});
+
+<span class="pl-k">var</span> B <span class="pl-k">=</span> newClass({
+    name<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">'</span>B<span class="pl-pds">'</span></span>,
+    extends<span class="pl-k">:</span> A,
+
+    <span class="pl-en">constructor</span>(<span class="pl-smi">value</span>) {
+        assert.strictEqual(<span class="pl-v">this</span>.<span class="pl-c1">constructor</span>, B);
+        <span class="pl-v">this</span>.bValue <span class="pl-k">=</span> value;
+    }
+});
+</pre></div>
+
+<h2>
+<a id="class-special-properties" class="anchor" href="#class-special-properties" aria-hidden="true"><span class="octicon octicon-link"></span></a>Class special properties</h2>
+
+<ul>
+<li>
+<code>name</code>: set the name of the class</li>
+<li>
+<code>abstract</code>: set the class as abstract</li>
+<li>
+<code>constructor</code>: this is the constructor of the class, like the constructor function in es6 classes</li>
+<li>
+<code>extends</code>: extends a class from another or from an object</li>
+<li>
+<code>implements</code>: light checks over expected implementations and warn eventually when something is missing</li>
+<li><code>prototype</code></li>
+<li>
+<code>static</code>: define static properties in the class</li>
+<li>
+<code>with</code>: an array of traits, objects with properties</li>
+</ul>
+
+<h2>
+<a id="properties" class="anchor" href="#properties" aria-hidden="true"><span class="octicon octicon-link"></span></a>Properties</h2>
+
+<p>Properties are defined in the prototype. If you want to set a property in the instance, use the constructor to do that.
+If you want to define a property in the object, use <code>static</code>.</p>
+
+<h3>
+<a id="constant-properties" class="anchor" href="#constant-properties" aria-hidden="true"><span class="octicon octicon-link"></span></a>Constant properties</h3>
+
+<p>You can set constant properties like this:</p>
+
+<pre><code>var A = newClass({
+    name: 'A',
+    constantProperty: newClass.const('myValue');
+});
+
+A.prototype.constantProperty = 'anotherValue'; // Error !
+</code></pre>
+
+<h3>
+<a id="lazy-properties" class="anchor" href="#lazy-properties" aria-hidden="true"><span class="octicon octicon-link"></span></a>Lazy properties</h3>
+
+<pre><code>var A = newClass({
+    name: 'A',
+    lazyProperty: newClass.lazy(() =&gt; 'expensive result');
+});
+
+
+var a = new A();
+console.log(a.lazyProperty); // the result of the function is set in `a.lazyProperty`
+
+</code></pre>
+
+<h3>
+<a id="lazy-constant-properties" class="anchor" href="#lazy-constant-properties" aria-hidden="true"><span class="octicon octicon-link"></span></a>Lazy constant properties</h3>
+
+<pre><code>var A = newClass({
+    name: 'A',
+    lazyAndConstProperty: newClass.lazyConst(() =&gt; 'expensive result');
+});
+
+
+var a = new A();
+console.log(a.lazyAndConstProperty); // the result of the function is set in `a.lazyProperty`
+</code></pre>
+
+<p>Note: both the prototype function and the instance property values are constants.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Esnext-class maintained by <a href="https://github.com/christophehurpeau">christophehurpeau</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
