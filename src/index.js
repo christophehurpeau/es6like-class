@@ -105,7 +105,7 @@ exports.lazy = function lazyProperty(value) {
     return {
         lazyProperty: lazyProperty,
         value: value,
-    }
+    };
 };
 
 /**
@@ -115,7 +115,7 @@ exports.const = function constProperty(value) {
     return {
         constProperty: constProperty,
         value: value,
-    }
+    };
 };
 
 /**
@@ -123,10 +123,10 @@ exports.const = function constProperty(value) {
  */
 exports.lazyConst = function lazyConstProperty(value) {
     return {
-        lazyProperty: lazyProperty,
-        constProperty: constProperty,
+        lazyProperty: exports.lazy,
+        constProperty: exports.const,
         value: value,
-    }
+    };
 };
 
 exports.newClass = function newClass(description) {
