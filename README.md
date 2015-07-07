@@ -1,4 +1,4 @@
-esnext-class [![NPM version][npm-image]][npm-url] [![Build Status][build-status-image]][build-status-url] [![Coverage][coverage-image]][coverage-url]
+esnext-class [![NPM version][npm-image]][npm-url] [![Build Status][build-status-image]][build-status-url] [![Code Climate][code-climate-image]][code-climate-url] [![Coverage][coverage-image]][coverage-url]
 ============================
 
 Write es6 like classes in es5 with a few more features
@@ -52,7 +52,7 @@ If you want to define a property in the object, use `static`.
 
 You can set constant properties like this:
 
-```
+```js
 var A = newClass({
     name: 'A',
     constantProperty: newClass.const('myValue');
@@ -63,7 +63,7 @@ A.prototype.constantProperty = 'anotherValue'; // Error !
 
 ### Lazy properties
 
-```
+```js
 var A = newClass({
     name: 'A',
     lazyProperty: newClass.lazy(() => 'expensive result');
@@ -72,12 +72,11 @@ var A = newClass({
 
 var a = new A();
 console.log(a.lazyProperty); // the result of the function is set in `a.lazyProperty`
-
 ```
 
 ### Lazy constant properties
 
-```
+```js
 var A = newClass({
     name: 'A',
     lazyAndConstProperty: newClass.lazyConst(() => 'expensive result');
@@ -90,9 +89,11 @@ console.log(a.lazyAndConstProperty); // the result of the function is set in `a.
 
 Note: both the prototype function and the instance property values are constants.
 
-[build-status-image]: https://drone.io/github.com/christophehurpeau/esnext-class/status.png
-[build-status-url]: https://drone.io/github.com/christophehurpeau/esnext-class/latest
+[build-status-image]: https://circleci.com/gh/christophehurpeau/esnext-class.svg?style=svg
+[build-status-url]: https://circleci.com/gh/christophehurpeau/esnext-class
 [npm-image]: https://img.shields.io/npm/v/esnext-class.svg?style=flat
 [npm-url]: https://npmjs.org/package/esnext-class
-[coverage-image]: http://img.shields.io/badge/coverage-92%-green.svg?style=flat
+[coverage-image]: https://codeclimate.com/github/christophehurpeau/esnext-class/badges/coverage.svg
 [coverage-url]: http://christophehurpeau.github.io/esnext-class/coverage/lcov-report/lib/index.js.html
+[code-climate-image]: https://codeclimate.com/github/christophehurpeau/esnext-class/badges/gpa.svg
+[code-climate-url]: https://codeclimate.com/github/christophehurpeau/esnext-class

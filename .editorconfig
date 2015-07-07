@@ -17,6 +17,6 @@ insert_final_newline = true
 indent_style = tab
 
 # Matches the exact files either package.json or .travis.yml
-[{package.json,.travis.yml,circle.yml}]
+[{package.json,.travis.yml,circle.yml,.codeclimate.yml}]
 indent_style = space
 indent_size = 2
